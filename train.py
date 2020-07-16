@@ -6,6 +6,7 @@ from utils.utils import *
 from utils.datasets import *
 from utils.parse_config import *
 from test import evaluate
+from utils.heat_dataset import HeatDataset
 
 from terminaltables import AsciiTable
 
@@ -64,7 +65,8 @@ if __name__ == "__main__":
             model.load_darknet_weights(opt.pretrained_weights)
 
     # Get dataloader
-    dataset = ListDataset(train_path, augment=True, multiscale=opt.multiscale_training)
+    # dataset = ListDataset(train_path, augment=True, multiscale=opt.multiscale_training)
+    dataset = HeatDataset(r"C:\Users\Simon\Documents\programming\MAPPE\data\misc", return_type="yolo")
     dataloader = torch.utils.data.DataLoader(
         dataset,
         batch_size=opt.batch_size,
@@ -96,10 +98,12 @@ if __name__ == "__main__":
     for epoch in range(opt.epochs):
         model.train()
         start_time = time.time()
-        for batch_i, (_, imgs, targets) in enumerate(dataloader):
+        for batch_i, (file_name, imgs, targets) in enumerate(dataloader):
+            print(file_name)
             print(imgs.shape)
-            print(targets)
-            assert False
+            print(imgs.dtype)
+            print(targets.shape)
+            print(targets.dtype)
             batches_done = len(dataloader) * epoch + batch_i
 
             imgs = Variable(imgs.to(device))
