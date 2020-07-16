@@ -97,6 +97,9 @@ if __name__ == "__main__":
         model.train()
         start_time = time.time()
         for batch_i, (_, imgs, targets) in enumerate(dataloader):
+            print(imgs.shape)
+            print(targets)
+            assert False
             batches_done = len(dataloader) * epoch + batch_i
 
             imgs = Variable(imgs.to(device))
